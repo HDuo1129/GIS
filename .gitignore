@@ -1,0 +1,32 @@
+# Data files (large, download separately)
+data/raw/*.gpkg
+data/raw/*.zip
+data/raw/*.tif
+data/raw/*.shp
+data/raw/*.dbf
+data/raw/*.shx
+data/raw/*.prj
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+env/
+
+# OS
+.DS_Store
+
+# Large outputs
+outputs/figures/*.png
+outputs/figures/*.pdf
+!outputs/figures/.gitkeep
