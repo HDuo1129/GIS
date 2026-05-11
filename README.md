@@ -1,26 +1,31 @@
 # Nairobi Healthcare Accessibility — GIS Analysis
 
-**Research Question:** How does healthcare accessibility differ between wealthy neighbourhoods and informal settlements within Nairobi?
+**Research Question:** How does healthcare accessibility differ between wealthy neighbourhoods (Karen, Westlands) and informal settlements (Kibera, Mathare) in Nairobi?
 
-**Study Areas:**
-| Area | Type | Approx. Population |
-|------|------|-------------------|
-| Karen | Wealthy residential | ~50,000 |
-| Westlands | Wealthy/commercial | ~300,000 |
-| Kibera | Informal settlement | 200,000–1,000,000 |
-| Mathare | Informal settlement | 200,000–500,000 |
+**Deliverables:** Jupyter notebook exported as HTML + 6-slide executive summary presentation
+
+---
+
+## Study Areas
+
+| Area | Type | Population (WorldPop 2020) |
+|------|------|---------------------------|
+| Karen | Wealthy residential (low-density) | ~102,000 |
+| Westlands | Wealthy / commercial | ~325,000 |
+| Kibera | Informal settlement | ~222,000 |
+| Mathare | Informal settlement | ~194,000 |
 
 ---
 
 ## Data Sources
 
-| Dataset | Source | How to Download |
-|---------|--------|-----------------|
-| Kenya OSM POI (hospitals, clinics) | [Geofabrik](https://download.geofabrik.de/africa/kenya.html) | Download `kenya-latest-free.shp.zip`, extract to `data/raw/` |
-| Kenya admin boundaries | [GADM](https://gadm.org/download_country.html) | Download Kenya GeoPackage to `data/raw/` |
-| WorldPop Kenya 2020 (100m) | [WorldPop Hub](https://hub.worldpop.org/geodata/summary?id=49694) | Download `ken_ppp_2020_UNadj.tif` to `data/raw/` |
+| Dataset | Source | Local path |
+|---------|--------|------------|
+| Kenya OSM POI (hospitals, clinics, pharmacies) | [Geofabrik Kenya](https://download.geofabrik.de/africa/kenya.html) | `Data/raw/kenya-260510-free/gis_osm_pois_free_1.shp` |
+| WorldPop Kenya 2020 constrained 100m raster | [WorldPop Hub](https://hub.worldpop.org/geodata/summary?id=49694) | `Data/raw/ken_pop_2020_CN_100m_R2025A_v1.tif` |
+| Nairobi walk network (auto-downloaded) | OSMnx / OpenStreetMap | `Data/processed/nairobi_walk.graphml` (83 MB, not in git) |
 
-> **Note:** Raw data files are not committed to Git due to size. Download them manually into `data/raw/`.
+> Raw data files are **not committed** due to size. Download them manually — see paths above.
 
 ---
 
@@ -28,17 +33,17 @@
 
 ```
 Project/
-├── data/
-│   ├── raw/                        # Downloaded source data (not versioned)
-│   │   ├── gis_osm_pois_free_1.shp # Kenya OSM POI
-│   │   ├── ken_ppp_2020_UNadj.tif  # WorldPop population raster
-│   │   └── gadm41_KEN.gpkg         # Kenya admin boundaries
-│   └── processed/                  # Cleaned / joined outputs
+├── Data/
+│   ├── raw/                                        # Downloaded source data (not versioned)
+│   │   ├── kenya-260510-free/gis_osm_pois_free_1.shp
+│   │   └── ken_pop_2020_CN_100m_R2025A_v1.tif
+│   └── processed/                                  # Walk graph (auto-generated, not versioned)
 ├── notebooks/
-│   └── nairobi_healthcare.ipynb    # Main analysis notebook
+│   └── nairobi_healthcare.ipynb                    # Main analysis notebook
 ├── outputs/
-│   ├── figures/                    # Generated maps
-│   └── tables/                     # Summary statistics (CSV)
+│   ├── figures/                                    # Generated maps (versioned)
+│   └── tables/
+│       └── area_summary.csv                        # Per-area statistics
 ├── requirements.txt
 └── README.md
 ```
@@ -48,35 +53,107 @@ Project/
 ## Analysis Workflow
 
 ### Step 1 — Data Loading & Spatial Filtering
-Load Kenya OSM POI, filter to Nairobi extent, classify by facility type (hospital / clinic / pharmacy).
+Load Nairobi boundary via OSMnx geocode. Load Kenya OSM POI shapefile, filter to health types (`hospital`, `clinic`, `pharmacy`, `doctors`), clip to Nairobi → **980 facilities**.
 
-### Step 2 — Hexagon Grid (H3 resolution 8, ~0.7 km²/hex)
-Generate hexagonal grid over Nairobi. Count facilities per hexagon. Join WorldPop raster to get population per hexagon.
+### Step 2 — H3 Hexagonal Grid (resolution 8, ~0.74 km²/hex)
+Fill Nairobi polygon with H3 hexagons (865 cells). Count facilities per hexagon. Extract WorldPop population via zonal statistics.
 
 ### Step 3 — Facility Density Map
-Choropleth: healthcare facilities per 10,000 people per hexagon. Highlight four study areas.
+Choropleth of facilities per 10,000 people. Population threshold >500 applied to filter low-density/peri-urban noise. Colormap capped at 5/10k for contrast.
 
-### Step 4 — Walk-Time Accessibility (Multi-source Dijkstra)
-Download Nairobi walking network via OSMnx. Using multi-source Dijkstra (super-source trick), compute travel time from every network node to the nearest hospital. Assign walk time to each hexagon centroid.
+### Step 4 — Walking Network & Multi-source Dijkstra
+Download Nairobi walk graph via OSMnx (72,265 nodes, 176,850 edges). Super-source Dijkstra: virtual node connected to all facility nodes at cost 0, then single-source shortest path gives travel time from every node to nearest facility in one pass.
 
-### Step 5 — Comparison Maps & Charts
-- Side-by-side walk-time maps (to hospital vs to any facility)
-- Bar charts: population-weighted average walk time by area
-- Coverage rate: % population within 15 / 30 / 60 min threshold
+### Step 5 — Walk-Time Maps
+Side-by-side choropleths: walk time to nearest hospital vs any facility.
+
+### Step 6 — Per-Area Comparison
+Population-weighted statistics per study area, bar charts.
 
 ---
 
-## Key Metrics
+## Results
 
-- **Facilities per 10,000 people** — equity metric (population-weighted)
-- **Average walk time to nearest hospital** — physical accessibility
-- **% population within 15/30/60 min** — threshold-based coverage
+### Map 1 — Facility Overview
+
+![Healthcare facilities in Nairobi](outputs/figures/01_nairobi_overview.png)
+
+980 health facilities in Nairobi. Hospitals concentrated in city centre (Upper Hill medical hub). Kibera and Mathare have high clinic/pharmacy density driven by NGO provision.
+
+---
+
+### Map 2 — Facilities per 10,000 People
+
+![Facilities per 10,000 people](outputs/figures/02_density_per10k.png)
+
+Key annotations:
+- **Upper Hill (Medical Hub):** highest facility concentration in the city
+- **Eastleigh / Embakasi:** elevated per-capita values likely reflect WorldPop underestimation of daytime workers near JKIA, not genuine residential accessibility
+- **UN / Gigiri:** international zone, low mapped facility count
+
+---
+
+### Map 3 — Walk-Time Accessibility
+
+![Walk time maps](outputs/figures/03_walk_time.png)
+
+City centre is highly accessible on foot (dark green). Karen (southwest) and eastern periphery show >60-minute walk times (dark red).
+
+---
+
+### Map 4 — Area Comparison Charts
+
+![Area comparison](outputs/figures/04_area_comparison.png)
+
+---
+
+### Summary Table
+
+| Area | Area km² | Population | All Facilities | Hospitals | Facilities / 10k | Avg Walk to Hospital | % <15 min | % <30 min | % <60 min |
+|------|---------|-----------|--------------|---------|----------------|---------------------|----------|----------|----------|
+| **Karen** | 71.3 | 101,925 | 4 | 1 | 0.39 | **56.3 min** | 5.3% | 16.4% | 54.6% |
+| **Westlands** | 97.5 | 324,665 | 75 | 12 | 2.31 | 38.9 min | 23.5% | 43.7% | 78.9% |
+| **Kibera** | 23.7 | 222,286 | 281 | 38 | 12.64 | 11.5 min | 73.5% | 97.3% | 100.0% |
+| **Mathare** | 3.0 | 193,786 | 129 | 18 | 6.66 | **7.2 min** | 100.0% | 100.0% | 100.0% |
+
+---
+
+## Key Findings
+
+1. **Karen (wealthy, low-density) has the worst walking accessibility** — average 56 min to hospital, only 5% within 15 min. Reflects car dependency; residents drive to Upper Hill.
+2. **Kibera and Mathare show surprisingly high facility counts** — driven by NGO/aid clinic provision and OSM coverage. Walk times are short partly because the areas are compact and dense.
+3. **Westlands is moderate on both metrics** — urban wealthy area with reasonable walk access.
+4. **Walking accessibility ≠ quality of care** — informal settlements have quantity but not necessarily specialist/high-quality services.
 
 ---
 
 ## Limitations
 
-- OSM data may underrepresent informal healthcare in Kibera/Mathare
-- WorldPop may underestimate population in dense informal settlements
-- Walk-time assumes 5 km/h on mapped paths; actual conditions in slums may differ
-- OSMnx walk network may omit unmapped footpaths in informal areas
+- OSM may underrepresent informal healthcare providers in Kibera/Mathare (actual counts likely higher)
+- WorldPop likely underestimates population in dense informal settlements (tin-roof high-density structures)
+- Walk-time assumes 5 km/h on all mapped paths; narrow informal settlement alleyways may be slower
+- Unmapped footpaths in OSM bias Kibera/Mathare walk times upward
+- Eastleigh/Embakasi high per-capita values reflect WorldPop undercounting daytime workers (JKIA/commercial zones), not genuine residential access
+- Karen and Westlands residents' effective access to Upper Hill is better than walk-time alone suggests (car-dependent)
+
+---
+
+## TODO / Refinements
+
+- [ ] Fix pink dot artifact on Westlands bar in `04_area_comparison.png`
+- [ ] Shrink Upper Hill circle radius to 0.012 on density map
+- [ ] Export notebook as HTML
+- [ ] Create 6-slide executive summary presentation
+
+---
+
+## Setup
+
+```bash
+conda create -n geo_env python=3.11
+conda activate geo_env
+pip install -r requirements.txt
+jupyter lab
+```
+
+Then open `notebooks/nairobi_healthcare.ipynb` and run all cells in order (Steps 1–6).

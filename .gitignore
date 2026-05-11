@@ -1,19 +1,21 @@
 # Data files (large, download separately)
-data/raw/*.gpkg
-data/raw/*.zip
-data/raw/*.tif
-data/raw/*.shp
-data/raw/*.dbf
-data/raw/*.shx
-data/raw/*.prj
+Data/raw/
+data/raw/
+Data/processed/*.graphml
+Data/processed/*.osm
+data/processed/*.graphml
 
-# Keep directory structure
-!data/raw/.gitkeep
-!data/processed/.gitkeep
+# Unrelated datasets
+Data/gadm41_CHN.gpkg
+Data/gansu*
+Data/jiangsu*
+Data/jiangsu.gpkg
+Data/gansu.gpkg
 
 # Jupyter
 .ipynb_checkpoints/
 **/.ipynb_checkpoints/
+notebooks/cache/
 
 # Python
 __pycache__/
@@ -26,7 +28,5 @@ env/
 # OS
 .DS_Store
 
-# Large outputs
-outputs/figures/*.png
-outputs/figures/*.pdf
-!outputs/figures/.gitkeep
+# Keep output figures (small PNGs — versioned for README preview)
+# outputs/figures/*.png  ← intentionally tracked
