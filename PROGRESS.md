@@ -140,9 +140,8 @@ Right-hand side of density map showed unexpectedly high per-capita values.
 
 ## Pending Tasks (as of 2026-05-13)
 
-- [ ] Fix pink dot artifact on Westlands bar in `04_area_comparison.png`
-- [ ] Shrink Upper Hill circle radius from 0.018 → 0.012 on density map (cell `9d2c235e`)
-- [ ] Re-run density map cell after radius fix and verify output
+- [x] Fix pink dot artifact on Westlands bar in `04_area_comparison.png`
+- [x] Shrink Upper Hill circle radius from 0.018 → 0.012 on density map
 - [x] Export notebook as HTML for submission → `nairobi_healthcare.html`
 - [ ] Create 6-slide executive summary presentation
   - Slide 1: Problem statement + study areas map

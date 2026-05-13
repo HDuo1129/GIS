@@ -142,8 +142,8 @@ City centre is highly accessible on foot (dark green). Karen (southwest) and eas
 
 ## TODO / Refinements
 
-- [ ] Fix pink dot artifact on Westlands bar in `04_area_comparison.png`
-- [ ] Shrink Upper Hill circle radius to 0.012 on density map
+- [x] Fix pink dot artifact on Westlands bar in `04_area_comparison.png`
+- [x] Shrink Upper Hill circle radius to 0.012 on density map
 - [x] Export notebook as HTML → `nairobi_healthcare.html`
 - [ ] Create 6-slide executive summary presentation
 
