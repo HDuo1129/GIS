@@ -163,5 +163,5 @@ Right-hand side of density map showed unexpectedly high per-capita values.
 | vmax = 5 for density map | 75th percentile of per_10k is ~0.56; vmax=10 washed out all contrast |
 | Walk speed 5 km/h | Standard pedestrian assumption; conservative for informal settlement paths |
 | Multi-source Dijkstra with super-source | O(E log V) single pass; scales to 72k-node graph without per-facility iteration |
-| Kibera manual bbox | Nominatim returns a point not a polygon for informal settlements |
+| Kibera boundary via `ox.geocode_to_gdf("Kibra")` | OSM renamed Kibera → Kibra (2017); querying "Kibra" returns OSM relation #16246699 (boundary/administrative polygon, 1056 vertices) |
 | WorldPop constrained 100m | Compatible with H3 res-9 cell size (~0.105 km²); excludes non-residential land use |
