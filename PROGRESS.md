@@ -21,7 +21,7 @@ Manually downloaded two required files:
 | `ken_pop_2020_CN_100m_R2025A_v1.tif` | [WorldPop Hub](https://hub.worldpop.org/geodata/summary?id=49694) | 66 MB, constrained 100m 2020 raster |
 
 **Why 100m constrained (not 1km or unconstrained):**
-- H3 resolution 8 cells are ~0.74 km² — 100m raster gives meaningful sub-cell variation
+- H3 resolution 9 cells are ~0.105 km² — 100m raster gives meaningful sub-cell variation
 - Constrained model excludes non-residential areas (forests, water), better for urban population
 - WorldPop 2030 exists but uses projected data; 2020 matches OSM snapshot date
 
@@ -158,10 +158,10 @@ Right-hand side of density map showed unexpectedly high per-capita values.
 
 | Decision | Rationale |
 |----------|-----------|
-| H3 resolution 8 (~0.74 km²) | City-scale granularity; coarser than block level but finer than neighbourhood |
+| H3 resolution 9 (~0.105 km²) | Fine city-scale granularity; sub-block level detail suitable for intra-neighbourhood variation |
 | Population filter > 500 | Removes peri-urban hexagons where per_10k is mathematically extreme but meaningless |
 | vmax = 5 for density map | 75th percentile of per_10k is ~0.56; vmax=10 washed out all contrast |
 | Walk speed 5 km/h | Standard pedestrian assumption; conservative for informal settlement paths |
 | Multi-source Dijkstra with super-source | O(E log V) single pass; scales to 72k-node graph without per-facility iteration |
 | Kibera manual bbox | Nominatim returns a point not a polygon for informal settlements |
-| WorldPop constrained 100m | Best match for H3 res-8 cell size; excludes non-residential land use |
+| WorldPop constrained 100m | Compatible with H3 res-9 cell size (~0.105 km²); excludes non-residential land use |

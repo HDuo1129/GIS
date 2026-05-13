@@ -56,8 +56,8 @@ Project/
 ### Step 1 — Data Loading & Spatial Filtering
 Load Nairobi boundary via OSMnx geocode. Load Kenya OSM POI shapefile, filter to health types (`hospital`, `clinic`, `pharmacy`, `doctors`), clip to Nairobi → **980 facilities**.
 
-### Step 2 — H3 Hexagonal Grid (resolution 8, ~0.74 km²/hex)
-Fill Nairobi polygon with H3 hexagons (865 cells). Count facilities per hexagon. Extract WorldPop population via zonal statistics.
+### Step 2 — H3 Hexagonal Grid (resolution 9, ~0.105 km²/hex)
+Fill Nairobi polygon with H3 hexagons. Count facilities per hexagon. Extract WorldPop population via zonal statistics.
 
 ### Step 3 — Facility Density Map
 Choropleth of facilities per 10,000 people. Population threshold >500 applied to filter low-density/peri-urban noise. Colormap capped at 5/10k for contrast.
