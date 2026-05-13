@@ -24,6 +24,7 @@
 | Kenya OSM POI (hospitals, clinics, pharmacies) | [Geofabrik Kenya](https://download.geofabrik.de/africa/kenya.html) | `Data/raw/kenya-260510-free/gis_osm_pois_free_1.shp` |
 | WorldPop Kenya 2020 constrained 100m raster | [WorldPop Hub](https://hub.worldpop.org/geodata/summary?id=49694) | `Data/raw/ken_pop_2020_CN_100m_R2025A_v1.tif` |
 | Nairobi walk network (auto-downloaded) | OSMnx / OpenStreetMap | `Data/processed/nairobi_walk.graphml` (83 MB, not in git) |
+| Kibra (Kibera) boundary | OpenStreetMap relation [#16246699](https://www.openstreetmap.org/relation/16246699) | auto-fetched via `ox.geocode_to_gdf("Kibra, Nairobi, Kenya")` |
 
 > Raw data files are **not committed** due to size. Download them manually — see paths above.
 
@@ -121,7 +122,7 @@ City centre is highly accessible on foot (dark green). Karen (southwest) and eas
 
 ## Key Findings
 
-1. **Karen (wealthy, low-density) has the worst walking accessibility** — average 56 min to hospital, only 5% within 15 min. Reflects car dependency; residents drive to Upper Hill.
+1. **Karen (wealthy, low-density) has the worst walking accessibility** — average 55.7 min to hospital, only 3.8% within 15 min. Reflects car dependency; residents drive to Upper Hill.
 2. **Kibera and Mathare show surprisingly high facility counts** — driven by NGO/aid clinic provision and OSM coverage. Walk times are short partly because the areas are compact and dense.
 3. **Westlands is moderate on both metrics** — urban wealthy area with reasonable walk access.
 4. **Walking accessibility ≠ quality of care** — informal settlements have quantity but not necessarily specialist/high-quality services.
