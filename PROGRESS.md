@@ -124,12 +124,26 @@ Right-hand side of density map showed unexpectedly high per-capita values.
 
 ---
 
-## Pending Tasks (as of 2026-05-11)
+## Session 2 — 2026-05-13
+
+### Changes
+- Re-ran full notebook; all 6 steps executed cleanly
+- Updated results (minor numerical shifts from re-run):
+  - Karen: avg walk 56.3 → 55.7 min; %<15 min 5.3 → 3.8%
+  - Westlands: avg walk 38.9 → 38.3 min
+  - Kibera: avg walk 11.5 → 10.6 min; %<15 min 73.5 → 75.2%
+  - Mathare: avg walk 7.2 → 6.2 min; %<15 min 100.0 → 99.1%
+- Exported notebook as HTML (`nairobi_healthcare.html`, ~2.8 MB, self-contained)
+- Updated `outputs/tables/area_summary.csv` and `outputs/figures/` with fresh run
+
+---
+
+## Pending Tasks (as of 2026-05-13)
 
 - [ ] Fix pink dot artifact on Westlands bar in `04_area_comparison.png`
 - [ ] Shrink Upper Hill circle radius from 0.018 → 0.012 on density map (cell `9d2c235e`)
 - [ ] Re-run density map cell after radius fix and verify output
-- [ ] Export notebook as HTML for submission
+- [x] Export notebook as HTML for submission → `nairobi_healthcare.html`
 - [ ] Create 6-slide executive summary presentation
   - Slide 1: Problem statement + study areas map
   - Slide 2: Data sources + methodology overview

@@ -44,6 +44,7 @@ Project/
 │   ├── figures/                                    # Generated maps (versioned)
 │   └── tables/
 │       └── area_summary.csv                        # Per-area statistics
+├── nairobi_healthcare.html                         # Exported notebook (full analysis, self-contained)
 ├── requirements.txt
 └── README.md
 ```
@@ -111,10 +112,10 @@ City centre is highly accessible on foot (dark green). Karen (southwest) and eas
 
 | Area | Area km² | Population | All Facilities | Hospitals | Facilities / 10k | Avg Walk to Hospital | % <15 min | % <30 min | % <60 min |
 |------|---------|-----------|--------------|---------|----------------|---------------------|----------|----------|----------|
-| **Karen** | 71.3 | 101,925 | 4 | 1 | 0.39 | **56.3 min** | 5.3% | 16.4% | 54.6% |
-| **Westlands** | 97.5 | 324,665 | 75 | 12 | 2.31 | 38.9 min | 23.5% | 43.7% | 78.9% |
-| **Kibera** | 23.7 | 222,286 | 281 | 38 | 12.64 | 11.5 min | 73.5% | 97.3% | 100.0% |
-| **Mathare** | 3.0 | 193,786 | 129 | 18 | 6.66 | **7.2 min** | 100.0% | 100.0% | 100.0% |
+| **Karen** | 71.3 | 101,925 | 4 | 1 | 0.39 | **55.7 min** | 3.8% | 18.9% | 55.2% |
+| **Westlands** | 97.5 | 324,665 | 75 | 12 | 2.31 | 38.3 min | 24.8% | 45.7% | 78.3% |
+| **Kibera** | 23.7 | 222,286 | 281 | 38 | 12.64 | 10.6 min | 75.2% | 96.1% | 100.0% |
+| **Mathare** | 3.0 | 193,786 | 129 | 18 | 6.66 | **6.2 min** | 99.1% | 100.0% | 100.0% |
 
 ---
 
@@ -142,7 +143,7 @@ City centre is highly accessible on foot (dark green). Karen (southwest) and eas
 
 - [ ] Fix pink dot artifact on Westlands bar in `04_area_comparison.png`
 - [ ] Shrink Upper Hill circle radius to 0.012 on density map
-- [ ] Export notebook as HTML
+- [x] Export notebook as HTML → `nairobi_healthcare.html`
 - [ ] Create 6-slide executive summary presentation
 
 ---
